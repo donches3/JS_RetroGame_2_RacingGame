@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>BrickOut</title>
+    </head>
+    <body>
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+    </body>
+    <script type="text/javascript">
+        var canvas, canvasContext;
+
+        window.onload = function() {
+            canvas = document.getElementById('gameCanvas');
+            canvasContext = canvas.getContext('2d');
+
+            canvasContext.fillStyle = 'black';
+            canvasContext.fillRect(0, 0, canvas.width, canvas.height);
+
+        } // end window.onload -------------------------------------------------
+    </script>
+</html>
