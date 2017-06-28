@@ -15,11 +15,11 @@
         var ballSpeedX = 5;
         var ballSpeedY = 7;
 
-        const TRACK_W = 80;
-        const TRACK_H = 20;
+        const TRACK_W = 40;
+        const TRACK_H = 40;
         const TRACK_GAP = 2;
-        const TRACK_COLS = 10;
-        const TRACK_ROWS = 14;
+        const TRACK_COLS = 20;
+        const TRACK_ROWS = 15;
         var trackGrid = new Array(TRACK_COLS * TRACK_ROWS);
         var tracksLeft = 0;
 
@@ -68,13 +68,8 @@
         function trackReset() {
             tracksLeft = 0;
 
-            // empty gutter at top
-            for(var i = 0; i < 3 * TRACK_COLS; i++) {
-                trackGrid[i] = false;
-            } // end for empty gutter
-
-            // fill remaining track field
-            for(var i = 3 * TRACK_COLS; i < TRACK_COLS * TRACK_ROWS; i++) {
+            // fill track field
+            for(var i = 0; i < TRACK_COLS * TRACK_ROWS; i++) {
                 trackGrid[i] = true;
                 tracksLeft++;
             } // end for tracks
