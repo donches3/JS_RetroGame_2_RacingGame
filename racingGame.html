@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>BrickOut</title>
+        <title>RacingGame</title>
     </head>
     <body>
         <canvas id="gameCanvas" width="800" height="600"></canvas>
@@ -23,13 +23,6 @@
         var brickGrid = new Array(BRICK_COLS * BRICK_ROWS);
         var bricksLeft = 0;
 
-        const PADDLE_WIDTH = 100;
-        const PADDLE_THICKNESS = 10;
-        const PADDLE_DIST_FROM_EDGE = 60;
-        var paddleX = 400;
-        // var paddleY = canvas.height - PADDLE_DIST_FROM_EDGE;
-            // no.  canvas not defined yet.
-
         var mouseX = 0;
         var mouseY = 0;
         // end vars ------------------------------------------------------------
@@ -40,8 +33,6 @@
 
             mouseX = evt.clientX - rect.left - root.scrollLeft;
             mouseY = evt.clientY - rect.top  - root.scrollTop;
-
-            paddleX = mouseX - PADDLE_WIDTH/2;
 
             //                                   temporary cheat ||||||||||||||
             // ballX = mouseX;
@@ -175,35 +166,10 @@
             } // end if within brick field
         } // end function ballBrickHandling ------------------------------------
 
-        function ballPaddleHandling() {
-
-            // paddle collision edges
-            var paddleTopEdgeY    = canvas.height - PADDLE_DIST_FROM_EDGE;
-            var paddleBottomEdgeY = paddleTopEdgeY + PADDLE_THICKNESS;
-            var paddleLeftEdgeX   = paddleX;
-            var paddleRightEdgeX  = paddleLeftEdgeX + PADDLE_WIDTH;
-
-            // paddle collision
-            if (   ballY > paddleTopEdgeY
-                && ballY < paddleBottomEdgeY
-                && ballX > paddleLeftEdgeX
-                && ballX < paddleRightEdgeX )
-                {
-                    ballSpeedY *= -1; // reflect ball
-                    var centerOfPaddleX = paddleX + PADDLE_WIDTH/2;
-                    var ballDistFromPaddleCenterX = ballX - centerOfPaddleX;
-                    ballSpeedX = ballDistFromPaddleCenterX * 0.35;
-
-                    if (bricksLeft == 0) {
-                        brickReset();
-                    } // end if out of bricks
-                } // end if paddle collision
-        } // end function ballPaddleHandling -----------------------------------
 
         function moveAll() {
             ballMove();
             ballBrickHandling();
-            ballPaddleHandling();
         } // end function moveAll ----------------------------------------------
 
         function drawAll() {
@@ -212,9 +178,6 @@
 
             // draw ball
             colorCircle(ballX, ballY, 10, 'white');
-
-            // draw paddle
-            colorRect(paddleX, canvas.height - PADDLE_DIST_FROM_EDGE, PADDLE_WIDTH, PADDLE_THICKNESS, 'white');
 
             // draw brick grid
             drawBricks();
