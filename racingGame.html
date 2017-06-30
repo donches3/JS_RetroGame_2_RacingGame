@@ -16,8 +16,7 @@
         var carX = 75;
         var carY = 75;
         var carAng = 0;
-        var carSpeedX = 5;
-        var carSpeedY = 7;
+        var carSpeed = 2;
 
         const TRACK_W = 40;
         const TRACK_H = 40;
@@ -97,24 +96,11 @@
 
         function carMove() {
             // increment car position
-            // carX += carSpeedX;
-            // carY += carSpeedY;
+            carX += Math.cos(carAng) * carSpeed;
+            carY += Math.sin(carAng) * carSpeed;
             carAng += 0.02;
 
-            // car screen edge conditions
-            if (carX < 0 && carSpeedX < 0.0) { // left side of screen
-                carSpeedX *= -1;
-            }
-            if (carX > canvas.width && carSpeedX > 0.0) { // right side of screen
-                carSpeedX *= -1;
-            }
-            if (carY < 0 && carSpeedY < 0.0) { // top of screen
-                carSpeedY *= -1;
-            }
-            if (carY > canvas.height) { // bottom of screen
-                carReset();
-                trackReset();
-            }
+
         } // end function carMove ---------------------------------------------
 
         function isTrackAtColRow(col, row) {
@@ -140,39 +126,7 @@
                 // if track is present ...
                 if (isTrackAtColRow(carTrackCol, carTrackRow)) {
 
-                    // car position in previous frame
-                    var prevCarX = carX - carSpeedX;
-                    var prevCarY = carY - carSpeedY;
-                    var prevTrackCol = Math.floor(prevCarX / TRACK_W);
-                    var prevTrackRow = Math.floor(prevCarY / TRACK_H);
-
-                    var bothTestsFailed = true;
-
-                    // if column changed ...
-                    if (prevTrackCol != carTrackCol){
-                        // if adjacent face not covered ...
-                        if (isTrackAtColRow(prevTrackCol, carTrackRow) == false){
-                            // reflect car horizontally
-                            carSpeedX *= -1;
-                            bothTestsFailed = false;
-                        }
-                    } // end if column changed
-
-                    // if row changed ...
-                    if (prevTrackRow != carTrackRow){
-                        // if adjacent face not covered ...
-                        if (isTrackAtColRow(carTrackCol, prevTrackRow) == false){
-                            // reflect car vertically
-                            carSpeedY *= -1;
-                            bothTestsFailed = false;
-                        }
-                    } // end if row changed
-
-                    // armpit case, prevents car from going through
-                    if (bothTestsFailed) {
-                        carSpeedX *= -1;
-                        carSpeedY *= -1;
-                    }
+                    carSpeed *= -1;
 
                 } // end if track true
             } // end if within track field
