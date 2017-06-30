@@ -15,8 +15,8 @@
 
         var carX = 75;
         var carY = 75;
-        var carAng = 0;
-        var carSpeed = 2;
+        var carAng = -Math.PI/2;
+        var carSpeed = 0;
 
         const TRACK_W = 40;
         const TRACK_H = 40;
@@ -43,6 +43,10 @@
         const KEY_RIGHT_ARROW = 39;
         const KEY_UP_ARROW    = 38;
         const KEY_DOWN_ARROW  = 40;
+        var keyHeld_TurnLeft  = false;
+        var keyHeld_TurnRight = false;
+        var keyHeld_Gas       = false;
+        var keyHeld_Reverse   = false;
 
         var mouseX = 0;
         var mouseY = 0;
@@ -65,17 +69,18 @@
 
         function keyPressed(evt) {
             // console.log("Key pressed: " + evt.keyCode);
+
             if(evt.keyCode == KEY_LEFT_ARROW) { // turn left
-                carAng -= 0.5;
+                keyHeld_TurnLeft = true;
             }
             if(evt.keyCode == KEY_RIGHT_ARROW) { // turn right
-                carAng += 0.5;
+                keyHeld_TurnRight = true;
             }
             if(evt.keyCode == KEY_UP_ARROW) { // speed up
-                carSpeed += 0.5;
+                keyHeld_Gas = true;
             }
             if(evt.keyCode == KEY_DOWN_ARROW) { // slow down or reverse
-                carSpeed -= 0.5;
+                keyHeld_Reverse = true;
             }
 
             // prevents arrow keys from scrolling screen
@@ -85,6 +90,19 @@
 
         function keyReleased(evt) {
             // console.log("Key released: " + evt.keyCode);
+
+            if(evt.keyCode == KEY_LEFT_ARROW) {
+                keyHeld_TurnLeft = false;
+            }
+            if(evt.keyCode == KEY_RIGHT_ARROW) {
+                keyHeld_TurnRight = false;
+            }
+            if(evt.keyCode == KEY_UP_ARROW) {
+                keyHeld_Gas = false;
+            }
+            if(evt.keyCode == KEY_DOWN_ARROW) {
+                keyHeld_Reverse = false;
+            }
 
         } // end function keyReleased ------------------------------------------
 
@@ -128,6 +146,21 @@
         } // end function carReset --------------------------------------------
 
         function carMove() {
+
+            carSpeed *= 0.97; // drag
+
+            if(keyHeld_Gas) {
+                carSpeed += 0.3;
+            }
+            if(keyHeld_Reverse) {
+                carSpeed -= 0.3;
+            }
+            if(keyHeld_TurnLeft) {
+                carAng -= 0.04;
+            }
+            if(keyHeld_TurnRight) {
+                carAng += 0.04;
+            }
             // increment car position
             carX += Math.cos(carAng) * carSpeed;
             carY += Math.sin(carAng) * carSpeed;
@@ -157,7 +190,13 @@
                 // if track is present ...
                 if (isTrackAtColRow(carTrackCol, carTrackRow)) {
 
-                    carSpeed *= -1;
+                    // these two lines prevent burrowing bug by
+                    // reverse incrementing car position
+                    // before changing carSpeed
+                    carX -= Math.cos(carAng) * carSpeed;
+                    carY -= Math.sin(carAng) * carSpeed;
+
+                    carSpeed *= -0.5;
 
                 } // end if track true
             } // end if within track field
@@ -165,7 +204,7 @@
 
 
         function moveAll() {
-            carMove();  // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+            carMove();
             carTrackHandling();
         } // end function moveAll ----------------------------------------------
 
