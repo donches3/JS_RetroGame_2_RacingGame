@@ -39,6 +39,11 @@
                          1,0,0,0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,1,1,
                          1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1];
 
+        const KEY_LEFT_ARROW  = 37;
+        const KEY_RIGHT_ARROW = 39;
+        const KEY_UP_ARROW    = 38;
+        const KEY_DOWN_ARROW  = 40;
+
         var mouseX = 0;
         var mouseY = 0;
         // end vars ------------------------------------------------------------
@@ -58,6 +63,31 @@
 
         } // end function updateMousePos ---------------------------------------
 
+        function keyPressed(evt) {
+            // console.log("Key pressed: " + evt.keyCode);
+            if(evt.keyCode == KEY_LEFT_ARROW) { // turn left
+                carAng -= 0.5;
+            }
+            if(evt.keyCode == KEY_RIGHT_ARROW) { // turn right
+                carAng += 0.5;
+            }
+            if(evt.keyCode == KEY_UP_ARROW) { // speed up
+                carSpeed += 0.5;
+            }
+            if(evt.keyCode == KEY_DOWN_ARROW) { // slow down or reverse
+                carSpeed -= 0.5;
+            }
+
+            // prevents arrow keys from scrolling screen
+            evt.preventDefault();
+
+        } // end function keyPressed -------------------------------------------
+
+        function keyReleased(evt) {
+            // console.log("Key released: " + evt.keyCode);
+
+        } // end function keyReleased ------------------------------------------
+
         window.onload = function() {
             canvas = document.getElementById('gameCanvas');
             canvasContext = canvas.getContext('2d');
@@ -66,6 +96,9 @@
             setInterval(updateAll, 1000/framesPerSecond);
 
             canvas.addEventListener('mousemove', updateMousePos);
+
+            document.addEventListener('keydown', keyPressed);
+            document.addEventListener('keyup', keyReleased);
 
             carPic.onload = function() {
                 carPicLoaded = true;
@@ -98,8 +131,6 @@
             // increment car position
             carX += Math.cos(carAng) * carSpeed;
             carY += Math.sin(carAng) * carSpeed;
-            carAng += 0.02;
-
 
         } // end function carMove ---------------------------------------------
 
