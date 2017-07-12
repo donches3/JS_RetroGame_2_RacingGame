@@ -1,5 +1,3 @@
-var roadPic = document.createElement("img");
-var wallPic = document.createElement("img");
 
 const TRACK_W = 40;
 const TRACK_H = 40;
@@ -27,11 +25,6 @@ const TRACK_ROAD = 0;
 const TRACK_WALL = 1;
 const TRACK_PLAYERSTART = 2;
 // end vars --------------------------------------------------------------------
-
-function trackLoadImages() {
-    roadPic.src = "track_road.png";
-    wallPic.src = "track_wall.png";
-} // end function loadTrackImages ----------------------------------------------
 
 function isWallAtColRow(col, row) {
     // if inside track field ...
