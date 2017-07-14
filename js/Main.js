@@ -22,9 +22,16 @@ function imageLoadingDoneSoStartGame() {
     setInterval(updateAll, 1000/framesPerSecond);
 
     setupInput();
-    blueCar.reset(car1Pic);
-    greenCar.reset(car2Pic);
+
+    loadLevel(levelOne);
+
 } // end function imageLoadingDoneSoStartGame ----------------------------------
+
+function loadLevel(whichLevel) {
+    trackGrid = whichLevel.slice(); // copies all values in whichLevel into trackGrid
+    blueCar.reset(car1Pic, "Blue Steel");
+    greenCar.reset(car2Pic, "Green Granite");
+} // end function loadLevel ----------------------------------------------------
 
 function updateAll() {
     moveAll();
