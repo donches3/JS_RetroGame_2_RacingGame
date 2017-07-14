@@ -40,9 +40,9 @@ function isObstacleAtColRow(col, row) {
         } // end if else
 } // end function isObstacleAtColRow -----------------------------------------------
 
-function carTrackHandling() {
-    var carTrackCol = Math.floor(carX / TRACK_W);
-    var carTrackRow = Math.floor(carY / TRACK_H);
+function carTrackHandling(whichCar) {
+    var carTrackCol = Math.floor(whichCar.x / TRACK_W);
+    var carTrackRow = Math.floor(whichCar.y / TRACK_H);
     var trackIndexUnderCar = rowColToArrayIndex(carTrackCol, carTrackRow);
 
     // if car is within track field ...
@@ -55,10 +55,10 @@ function carTrackHandling() {
             // these two lines prevent burrowing bug by
             // reverse incrementing car position
             // before changing carSpeed
-            carX -= Math.cos(carAng) * carSpeed;
-            carY -= Math.sin(carAng) * carSpeed;
+            whichCar.x -= Math.cos(whichCar.ang) * whichCar.speed;
+            whichCar.y -= Math.sin(whichCar.ang) * whichCar.speed;
 
-            carSpeed *= -0.5;
+            whichCar.speed *= -0.5;
 
         } // end if track true
     } // end if within track field

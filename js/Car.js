@@ -1,55 +1,60 @@
 
-var carX = 75;
-var carY = 75;
-var carAng = -Math.PI/2;
-var carSpeed = 0;
 
 const SPEED_DECAY_MULT = 0.94;
 const DRIVE_POWER = 0.5;
 const REVERSE_POWER = 0.2;
 const TURN_RATE = 0.06;
 const MIN_SPEED_TO_TURN = 0.5;
-// end vars --------------------------------------------------------------------
 
-function carReset() {
-    for(var eachRow = 0; eachRow < TRACK_ROWS; eachRow++) {
-        for(var eachCol = 0; eachCol < TRACK_COLS; eachCol++) {
-            var arrayIndex = rowColToArrayIndex(eachCol, eachRow);
-            if(trackGrid[arrayIndex] == TRACK_PLAYERSTART) {
-                trackGrid[arrayIndex] = TRACK_ROAD;
-                carX = eachCol * TRACK_W + TRACK_W/2;
-                carY = eachRow * TRACK_H + TRACK_H/2;
-            } // end if
-        } // end for eachCol
-    } // end for eachRow
-} // end function carReset -----------------------------------------------------
+function carClass() { // begin carClass ========================================
 
-function carMove() {
+    this.x = 75;
+    this.y = 75;
+    this.ang = 0;
+    this.speed = 0;
 
-    carSpeed *= SPEED_DECAY_MULT;
+    this.reset = function() {
+        for(var eachRow = 0; eachRow < TRACK_ROWS; eachRow++) {
+            for(var eachCol = 0; eachCol < TRACK_COLS; eachCol++) {
+                var arrayIndex = rowColToArrayIndex(eachCol, eachRow);
+                if(trackGrid[arrayIndex] == TRACK_PLAYERSTART) {
+                    trackGrid[arrayIndex] = TRACK_ROAD;
+                    this.ang = -Math.PI/2;
+                    this.x = eachCol * TRACK_W + TRACK_W/2;
+                    this.y = eachRow * TRACK_H + TRACK_H/2;
+                } // end if playerstart
+            } // end for eachCol
+        } // end for eachRow
+    } // end this function reset -----------------------------------------------
 
-    if(keyHeld_Gas) {
-        carSpeed += DRIVE_POWER;
-    }
-    if(keyHeld_Reverse) {
-        carSpeed -= REVERSE_POWER;
-    }
+    this.move = function() {
 
-    if(Math.abs(carSpeed) > MIN_SPEED_TO_TURN) { // only turn while moving
-        if(keyHeld_TurnLeft) {
-            carAng -= TURN_RATE;
+        this.speed *= SPEED_DECAY_MULT;
+
+        if(keyHeld_Gas) {
+            this.speed += DRIVE_POWER;
         }
-        if(keyHeld_TurnRight) {
-            carAng += TURN_RATE;
+        if(keyHeld_Reverse) {
+            this.speed -= REVERSE_POWER;
         }
-    }
 
-    // increment car position
-    carX += Math.cos(carAng) * carSpeed;
-    carY += Math.sin(carAng) * carSpeed;
+        if(Math.abs(this.speed) > MIN_SPEED_TO_TURN) { // only turn while moving
+            if(keyHeld_TurnLeft) {
+                this.ang -= TURN_RATE;
+            }
+            if(keyHeld_TurnRight) {
+                this.ang += TURN_RATE;
+            }
+        }
 
-} // end function carMove ------------------------------------------------------
+        // increment car position
+        this.x += Math.cos(this.ang) * this.speed;
+        this.y += Math.sin(this.ang) * this.speed;
 
-function carDraw() {
-    drawBitmapCenteredWithRotation(carPic, carX, carY, carAng);
-} // end function carDraw -----------------------------------------------------
+    } // end this function move ------------------------------------------------
+
+    this.draw = function() {
+        drawBitmapCenteredWithRotation(carPic, this.x, this.y, this.ang);
+    } // end this function draw ------------------------------------------------
+
+} // end function carClass =====================================================
