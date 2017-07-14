@@ -1,12 +1,15 @@
 
-const KEY_LEFT_ARROW  = 37;
-const KEY_RIGHT_ARROW = 39;
+// Arrow key codes
 const KEY_UP_ARROW    = 38;
+const KEY_RIGHT_ARROW = 39;
 const KEY_DOWN_ARROW  = 40;
-var keyHeld_TurnLeft  = false;
-var keyHeld_TurnRight = false;
-var keyHeld_Gas       = false;
-var keyHeld_Reverse   = false;
+const KEY_LEFT_ARROW  = 37;
+
+// WASD key codes
+const KEY_W = 87; // up
+const KEY_D = 68; // right
+const KEY_S = 83; // down
+const KEY_A = 65; // left
 
 var mouseX = 0;
 var mouseY = 0;
@@ -17,6 +20,10 @@ function setupInput() {
 
         document.addEventListener('keydown', keyPressed);
         document.addEventListener('keyup', keyReleased);
+
+        blueCar.setupInput( KEY_UP_ARROW, KEY_RIGHT_ARROW, KEY_DOWN_ARROW, KEY_LEFT_ARROW);
+        greenCar.setupInput(KEY_W, KEY_D, KEY_S, KEY_A);
+
 } // end function updatesetupInputMousePos -------------------------------------
 
 function updateMousePos(evt) {
@@ -34,21 +41,27 @@ function updateMousePos(evt) {
 
 } // end function updateMousePos -----------------------------------------------
 
+function keySet(keyEvent, whichCar, setTo) {
+    if(keyEvent.keyCode == whichCar.controlKeyLeft) { // turn left
+        whichCar.keyHeld_TurnLeft = setTo;
+    }
+    if(keyEvent.keyCode == whichCar.controlKeyRight) { // turn right
+        whichCar.keyHeld_TurnRight = setTo;
+    }
+    if(keyEvent.keyCode == whichCar.controlKeyUp) { // speed up
+        whichCar.keyHeld_Gas = setTo;
+    }
+    if(keyEvent.keyCode == whichCar.controlKeyDown) { // slow down or reverse
+        whichCar.keyHeld_Reverse = setTo;
+    }
+
+} // end function keySet -------------------------------------------------------
+
 function keyPressed(evt) {
     // console.log("Key pressed: " + evt.keyCode);
 
-    if(evt.keyCode == KEY_LEFT_ARROW) { // turn left
-        keyHeld_TurnLeft = true;
-    }
-    if(evt.keyCode == KEY_RIGHT_ARROW) { // turn right
-        keyHeld_TurnRight = true;
-    }
-    if(evt.keyCode == KEY_UP_ARROW) { // speed up
-        keyHeld_Gas = true;
-    }
-    if(evt.keyCode == KEY_DOWN_ARROW) { // slow down or reverse
-        keyHeld_Reverse = true;
-    }
+    keySet(evt, blueCar, true);
+    keySet(evt, greenCar, true);
 
     // prevents arrow keys from scrolling screen
     evt.preventDefault();
@@ -58,17 +71,6 @@ function keyPressed(evt) {
 function keyReleased(evt) {
     // console.log("Key released: " + evt.keyCode);
 
-    if(evt.keyCode == KEY_LEFT_ARROW) {
-        keyHeld_TurnLeft = false;
-    }
-    if(evt.keyCode == KEY_RIGHT_ARROW) {
-        keyHeld_TurnRight = false;
-    }
-    if(evt.keyCode == KEY_UP_ARROW) {
-        keyHeld_Gas = false;
-    }
-    if(evt.keyCode == KEY_DOWN_ARROW) {
-        keyHeld_Reverse = false;
-    }
-
+    keySet(evt, blueCar, false);
+    keySet(evt, greenCar, false);
 } // end function keyReleased --------------------------------------------------

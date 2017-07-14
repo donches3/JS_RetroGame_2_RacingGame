@@ -14,6 +14,23 @@ function carClass() { // begin carClass ========================================
     this.speed = 0;
     this.myCarPic; // which picture to use
 
+    this.keyHeld_TurnLeft  = false;
+    this.keyHeld_TurnRight = false;
+    this.keyHeld_Gas       = false;
+    this.keyHeld_Reverse   = false;
+
+    this.controlKeyUp;
+    this.controlKeyRight;
+    this.controlKeyDown;
+    this.controlKeyLeft;
+
+    this.setupInput = function(upKey, rightKey, downKey, leftKey) {
+        this.controlKeyUp    = upKey;
+        this.controlKeyRight = rightKey;
+        this.controlKeyDown  = downKey;
+        this.controlKeyLeft  = leftKey;
+    }
+
     this.reset = function(whichImage) {
         this.myCarPic = whichImage;
         for(var eachRow = 0; eachRow < TRACK_ROWS; eachRow++) {
@@ -34,18 +51,18 @@ function carClass() { // begin carClass ========================================
 
         this.speed *= SPEED_DECAY_MULT;
 
-        if(keyHeld_Gas) {
+        if(this.keyHeld_Gas) {
             this.speed += DRIVE_POWER;
         }
-        if(keyHeld_Reverse) {
+        if(this.keyHeld_Reverse) {
             this.speed -= REVERSE_POWER;
         }
 
         if(Math.abs(this.speed) > MIN_SPEED_TO_TURN) { // only turn while moving
-            if(keyHeld_TurnLeft) {
+            if(this.keyHeld_TurnLeft) {
                 this.ang -= TURN_RATE;
             }
-            if(keyHeld_TurnRight) {
+            if(this.keyHeld_TurnRight) {
                 this.ang += TURN_RATE;
             }
         }
